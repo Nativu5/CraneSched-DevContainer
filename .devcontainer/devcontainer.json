@@ -1,0 +1,9 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "CraneSched Dev Container",
+	"image": "registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest",
+	"privileged": true,
+	"workspaceFolder": "/Workspace/Project",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/Workspace/Project,type=bind,consistency=cached",
+	"postCreateCommand": "bash /Workspace/Scripts/Banner.sh"
+}
