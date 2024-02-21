@@ -5,5 +5,8 @@
 	"privileged": true,
 	"workspaceFolder": "/Workspace/Project",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/Workspace/Project,type=bind,consistency=cached",
-	"postCreateCommand": "bash /Workspace/Scripts/Banner.sh"
+	"postCreateCommand": "bash /Workspace/Scripts/Launch-SSH.sh",
+	"containerEnv": {
+		"TZ": "Asia/Shanghai"
+	}
 }
