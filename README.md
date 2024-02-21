@@ -1,23 +1,27 @@
-# DevContainer for CraneSched
+# Dev Container for CraneSched
 
 ## Quick Start
 
-1. Open VSCode and configure DevContainer. 
-2. Add .devcontainer to your project.
+1. Open VS Code and configure Dev Container. 
+2. Copy .devcontainer folder to your project.
 3. Reopen the project in the container.
 
-See [Developing inside a Container](https://code.visualstudio.com/docs/remote/containers) for more information.
+To learn more about Dev Container in VS Code, see [Developing inside a Container](https://code.visualstudio.com/docs/remote/containers) 
 
-## Image
+For advanced configuration, see [Dev Container metadata reference](https://containers.dev/implementors/json_reference/). 
+
+## Without VS Code
+
+If not using VS Code, refer to below commands for manual build and run: 
 
 - Build and push
-```bash
-docker build -t registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest .
-docker push registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
-```
+    ```sh
+    docker build -t registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest .
+    docker push registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
+    ```
 
 - Pull and run
-```bash
-docker pull registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
-docker run -it --rm --name cranedev registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
-```
+    ```sh
+    docker pull registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
+    docker run -it --rm --name cranedev registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
+    ```
