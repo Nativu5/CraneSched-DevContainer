@@ -1,3 +1,6 @@
+# CraneSched Dev Container
+# Tag: cranedev:latest, cranedev:gcc13-llvm
+
 FROM rockylinux:9.3
 
 # Replace mirror for China Mainland and add EPEL
@@ -37,15 +40,19 @@ RUN curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz -o /tmp/go.tar.gz \
 
 # Install toolchains
 RUN dnf makecache \
-    && dnf group install -y "Development Tools" \
     && dnf install -y \
+    libstdc++-devel \
     libstdc++-static \
+    gcc-toolset-13 \
     llvm-toolset \
     git \
+    which \
     patch \
+    flex \
+    bison \
     ninja-build \
-    openssh-server \
-    && dnf clean all
+    && dnf clean all \
+    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh
 
 # Install dependencies
 RUN dnf makecache \ 
@@ -62,14 +69,28 @@ RUN dnf makecache \
     && ./configure --prefix=/usr/local \
     && make -j$(nproc) \
     && make install \
-    && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz
+    && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz \
+    && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
 
-# Configure extra environment
+# Development Utils
+RUN dnf makecache \
+    && dnf install -y \
+    ccache \
+    lldb \
+    gdb \
+    valgrind \
+    vim \
+    tmux \
+    iproute \
+    openssh-server \
+    && dnf clean all
+
+# Configure extra environment for development
 RUN mkdir /var/run/sshd \
     && ssh-keygen -A \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && echo 'root:xFeN1L1Hkbtw' | chpasswd \
-    && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
+    && echo 'export PATH=/usr/lib64/ccache:$PATH' >> /etc/profile.d/extra.sh
 
 # Add files
 WORKDIR /Workspace
