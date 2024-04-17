@@ -13,5 +13,18 @@
 	"postStartCommand": "bash /Workspace/Scripts/Launch-SSH.sh",
 	"containerEnv": {
 		"TZ": "Asia/Shanghai"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"golang.Go",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"vadimcn.vscode-lldb",
+				"zxh404.vscode-proto3",
+				"Gruntfuggly.todo-tree"
+			]
+		}
 	}
 }
