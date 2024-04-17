@@ -72,25 +72,6 @@ RUN dnf makecache \
     && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz \
     && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
 
-# Development utils
-# RUN dnf makecache \
-#     && dnf install -y \
-#     ccache \
-#     lldb \
-#     gdb \
-#     valgrind \
-#     vim \
-#     tmux \
-#     iproute \
-#     openssh-server \
-#     && dnf clean all
-
-# Configure extra environment
-# RUN mkdir /var/run/sshd \
-#     && ssh-keygen -A \
-#     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-#     && echo 'root:xFeN1L1Hkbtw' | chpasswd
-
 # Add files
 WORKDIR /Workspace
 COPY ./Scripts /Workspace/Scripts

@@ -1,0 +1,60 @@
+{
+    "editor.formatOnSave": true,
+    "cmake.configureOnOpen": false,
+    "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
+    "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
+    "cmake.configureArgs": [
+        // "--fresh",
+        "-DENABLE_UNQLITE=ON",
+        "-DENABLE_BERKELEY_DB=OFF",
+        "-DCRANE_FULL_DYNAMIC=OFF",
+        "-DCRANE_USE_GITEE_SOURCE=OFF"
+    ],
+    "clangd.checkUpdates": true,
+    "clangd.detectExtensionConflicts": true,
+    "clangd.serverCompletionRanking": true,
+    "clangd.inactiveRegions.useBackgroundHighlight": true,
+    "clangd.arguments": [
+        "--all-scopes-completion",
+        "--background-index",
+        "--background-index-priority=low",
+        "--clang-tidy",
+        "--compile-commands-dir=${workspaceFolder}/.vscode", // 编译数据库(compile_commands.json 文件)的目录位置
+        "--completion-parse=auto",
+        "--completion-style=detailed",
+        "--enable-config",
+        "--fallback-style=Google", // 默认格式化风格: 没有 .clang-format 文件时采用,可用的有 LLVM, Google, Chromium, Mozilla, Webkit, Microsoft, GNU
+        "--function-arg-placeholders", // 补全函数时，将会给参数提供占位符，键入后按 Tab 可以切换到下一占位符，乃至函数末
+        "--header-insertion=iwyu", // insert what you use
+        "--header-insertion-decorators", // 输入建议中，已包含头文件的项与还未包含头文件的项会以圆点加以区分
+        "-j=12",
+        "--log=info",
+        "--malloc-trim", // 定期释放内存
+        "--parse-forwarding-functions",
+        "--pch-storage=memory", // pch 优化的位置 (Memory 或 Disk, 前者会增加内存开销，但会提升性能)
+        "--pretty",
+        "--print-options",
+        "--query-driver=/usr/lib64/ccache/clang++",
+        "--ranking-model=decision_forest"
+    ],
+    "protoc": {
+        "path": "${workspaceFolder}/cmake-build-debug/_deps/protobuf-build/protoc"
+    },
+    "todo-tree.highlights.useColourScheme": true,
+    "cmake.options.statusBarVisibility": "compact",
+    "cmake.options.advanced": {
+        "ctest": {
+            "statusBarVisibility": "hidden"
+        },
+        "cpack": {
+            "statusBarVisibility": "hidden"
+        },
+        "workflow": {
+            "statusBarVisibility": "hidden"
+        },
+        "kit": {
+            "statusBarVisibility": "hidden"
+        }
+    },
+    "C_Cpp.intelliSenseEngine": "disabled"
+}

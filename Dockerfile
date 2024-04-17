@@ -82,6 +82,7 @@ RUN dnf makecache \
     vim \
     tmux \
     iproute \
+    iputils \
     openssh-server \
     && dnf clean all
 
