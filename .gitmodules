@@ -1,6 +1,8 @@
 [submodule "CraneSched"]
 	path = CraneSched
 	url = https://github.com/PKUHPC/CraneSched.git
+	branch = master
 [submodule "CraneSched-FrontEnd"]
 	path = CraneSched-FrontEnd
 	url = https://github.com/PKUHPC/CraneSched-FrontEnd.git
+	branch = master
