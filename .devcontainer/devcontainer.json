@@ -1,6 +1,6 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
-	"name": "CraneSched Dev Container",
+	"name": "CraneDev",
 	"image": "registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest",
 	"privileged": true,
 	"runArgs": [
