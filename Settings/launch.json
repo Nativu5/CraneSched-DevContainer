@@ -17,7 +17,7 @@
             "request": "launch",
             "type": "lldb",
             "program": "${command:cmake.launchTargetPath}",
-            "args": [],
-        },
+            "args": []
+        }
     ]
 }
