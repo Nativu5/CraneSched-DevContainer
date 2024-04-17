@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # This script is used to display a banner when log in. 
+
 source /etc/os-release
 echo "=================================================="
 echo "Welcome to the CraneSched's Dev Container"
