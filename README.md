@@ -4,7 +4,7 @@ Portable development environment for [CraneSched](https://github.com/PKUHPC/Cran
 
 ## Quick Start
 
-1. Open VS Code and configure Dev Container. 
+1. Open VS Code and install Dev Container extension.  
 2. Copy .devcontainer folder to your project.
 3. Reopen the project in the container.
 
