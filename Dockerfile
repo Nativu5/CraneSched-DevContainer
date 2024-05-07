@@ -52,7 +52,9 @@ RUN dnf makecache \
     bison \
     ninja-build \
     && dnf clean all \
-    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh
+    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh \
+    && /usr/local/go/bin/go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && /usr/local/go/bin/go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 # Install dependencies
 RUN dnf makecache \ 

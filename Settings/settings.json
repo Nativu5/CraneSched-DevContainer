@@ -38,7 +38,7 @@
         "--ranking-model=decision_forest"
     ],
     "protoc": {
-        "path": "${workspaceFolder}/cmake-build-debug/_deps/protobuf-build/protoc"
+        "path": "/usr/local/bin/protoc"
     },
     "todo-tree.highlights.useColourScheme": true,
     "cmake.options.statusBarVisibility": "compact",
