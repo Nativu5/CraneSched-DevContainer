@@ -33,18 +33,20 @@ RUN curl -L https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.2
 RUN curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz -o /tmp/go.tar.gz \
     && tar -C /usr/local -xzf /tmp/go.tar.gz \
     && rm /tmp/go.tar.gz \
-    && echo 'export GOPATH=/Workspace/go' >> /etc/profile.d/go.sh \
+    && echo 'export GOPATH=/root/go' >> /etc/profile.d/go.sh \
     && echo 'export PATH=$GOPATH/bin:/usr/local/go/bin:$PATH' >> /etc/profile.d/go.sh \
     && echo 'go env -w GO111MODULE=on' >> /etc/profile.d/go.sh \
-    && echo 'go env -w GOPROXY=https://goproxy.cn,direct' >> /etc/profile.d/go.sh
+    && echo 'go env -w GOPROXY=https://goproxy.cn,direct' >> /etc/profile.d/go.sh \ 
+    && source /etc/profile.d/go.sh \
+    && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 # Install toolchains
 RUN dnf makecache \
     && dnf install -y \
-    gcc \
-    g++ \
     libstdc++-devel \
     libstdc++-static \
+    gcc-toolset-13 \
     llvm-toolset \
     git \
     which \
@@ -52,7 +54,8 @@ RUN dnf makecache \
     flex \
     bison \
     ninja-build \
-    && dnf clean all
+    && dnf clean all \
+    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh 
 
 # Install dependencies
 RUN dnf makecache \ 
@@ -74,10 +77,7 @@ RUN dnf makecache \
 
 # Add files
 WORKDIR /Workspace
-COPY ./Scripts /Workspace/Scripts
+COPY Scripts/CI.sh /CI.sh
 
-# Expose SSH port
-EXPOSE 22
-
-# Launch SSH at container start
-CMD ["/bin/bash", "/Workspace/Scripts/Entrypoint.sh"]
+ENTRYPOINT [ "/bin/bash", "--login", "/CI.sh" ]
+CMD [ "--mode" ]

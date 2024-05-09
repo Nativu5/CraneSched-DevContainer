@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Protobuf: Generate",
+            "detail": "Generate Golang code using .proto files",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "mkdir -p \"${workspaceFolder}/generated/protos\" && protoc --go_out=${workspaceFolder}/generated --go-grpc_out=${workspaceFolder}/generated --proto_path=${workspaceFolder}/protos ${workspaceFolder}/protos/*.proto"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}

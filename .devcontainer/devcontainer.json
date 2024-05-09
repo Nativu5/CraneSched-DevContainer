@@ -8,9 +8,8 @@
 		"--security-opt",
 		"seccomp=unconfined"
 	],
-	"workspaceFolder": "/Workspace/Project",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/Workspace/Project,type=bind,consistency=cached",
-	"postStartCommand": "bash /Workspace/Scripts/Launch-SSH.sh",
+	"workspaceFolder": "/Workspace",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/Workspace,type=bind,consistency=cached",
 	"containerEnv": {
 		"TZ": "Asia/Shanghai"
 	},
@@ -22,8 +21,8 @@
 				"ms-vscode.cmake-tools",
 				"llvm-vs-code-extensions.vscode-clangd",
 				"vadimcn.vscode-lldb",
-				"zxh404.vscode-proto3",
-				"Gruntfuggly.todo-tree"
+				"Gruntfuggly.todo-tree",
+				"pbkit.vscode-pbkit"
 			]
 		}
 	}
