@@ -6,13 +6,43 @@ usage() {
 }
 
 frontend() {
-    echo "Running frontend setup..."
-    # Unimplemented
+    echo "Building frontend..."
+
+    pushd /Workspace
+    mkdir out 
+    mkdir -p generated/protos
+    protoc --go_out=./generated --go-grpc_out=./generated --proto_path=./protos ./protos/*.proto
+    
+    pushd out
+    go build ../cmd/cacct/cacct.go
+    go build ../cmd/cacctmgr/cacctmgr.go
+    go build ../cmd/cbatch/cbatch.go 
+    go build ../cmd/ccancel/ccancel.go 
+    go build ../cmd/ccontrol/ccontrol.go 
+    go build ../cmd/cinfo/cinfo.go
+    go build ../cmd/cqueue/cqueue.go
+    
+    echo "Done."
 }
 
 backend() {
-    echo "Running backend setup..."
-    # Unimplemented
+    echo "Building backend..."
+
+    pushd /Workspace
+    mkdir out
+    mkdir cmake-build-release && pushd cmake-build-release
+    cmake -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DENABLE_UNQLITE=ON \
+    -DENABLE_BERKELEY_DB=OFF \
+    -DCRANE_FULL_DYNAMIC=OFF \
+    -DCRANE_USE_GITEE_SOURCE=OFF .. 
+    cmake --build .
+    mv src/Craned/craned ../out/
+    mv src/CraneCtld/cranectld ../out/
+    mv src/Misc/Pam/pam_crane.so ../out/
+    
+    echo "Done."
 }
 
 # Check flags
