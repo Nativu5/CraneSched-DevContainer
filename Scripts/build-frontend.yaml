@@ -22,6 +22,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Generate protos
+        run: | 
+          echo "Generating protos at $(pwd)"
+          mkdir -p generated/protos
+          protoc --go_out=./generated \
+            --go-grpc_out=./generated \
+            --proto_path=./protos \
+            ./protos/*.proto
+
       - name: Build
         run: |
           echo "Building at $(pwd)"
@@ -33,7 +42,7 @@ jobs:
           go build ../cmd/ccontrol/ccontrol.go 
           go build ../cmd/cinfo/cinfo.go
           go build ../cmd/cqueue/cqueue.go
-          popd out
+          popd
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
