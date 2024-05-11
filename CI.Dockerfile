@@ -1,31 +1,19 @@
 # CraneSched Dev Container
-# Tag: cranedev:ci
 
-FROM rockylinux:9.3
+FROM rockylinux/rockylinux:9.4
 
-# Replace mirror for China Mainland and add EPEL
-RUN sed -e 's|^mirrorlist=|#mirrorlist=|g' \
-    -e 's|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.ustc.edu.cn/rocky|g' \
-    -i.bak \
-    /etc/yum.repos.d/rocky-extras.repo \
-    /etc/yum.repos.d/rocky.repo \
-    && dnf update -y \
+LABEL org.opencontainers.image.source https://github.com/Nativu5/CraneSched-DevContainer
+LABEL org.opencontainers.image.description "CraneSched DevContainer (CI)"
+
+# Add EPEL and CRB repositories
+RUN dnf update -y \
     && dnf install -y epel-release \
-    && sed -e 's!^metalink=!#metalink=!g' \
-    -e 's!^#baseurl=!baseurl=!g' \
-    -e 's!https\?://download\.fedoraproject\.org/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
-    -e 's!https\?://download\.example/pub/epel!https://mirrors.tuna.tsinghua.edu.cn/epel!g' \
-    -i /etc/yum.repos.d/epel{,-testing}.repo \
     && dnf install -y --allowerasing yum-utils curl unzip \
     && dnf config-manager --set-enabled crb \
     && dnf clean all
 
-# Install cmake and protobuf
-RUN curl -L https://github.com/Kitware/CMake/releases/download/v3.28.3/cmake-3.28.3-linux-x86_64.sh -o /tmp/cmake-install.sh \
-    && chmod +x /tmp/cmake-install.sh \
-    && /tmp/cmake-install.sh --prefix=/usr/local --skip-license \
-    && rm /tmp/cmake-install.sh \
-    && curl -L https://github.com/protocolbuffers/protobuf/releases/download/v23.2/protoc-23.2-linux-x86_64.zip -o /tmp/protoc.zip \
+# Install protobuf
+RUN curl -L https://github.com/protocolbuffers/protobuf/releases/download/v23.2/protoc-23.2-linux-x86_64.zip -o /tmp/protoc.zip \
     && unzip /tmp/protoc.zip -d /usr/local \
     && rm /tmp/protoc.zip /usr/local/readme.txt
 
@@ -44,12 +32,9 @@ RUN curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz -o /tmp/go.tar.gz \
 # Install toolchains
 RUN dnf makecache \
     && dnf install -y \
-    libstdc++-devel \
-    libstdc++-static \
     gcc-toolset-13 \
-    llvm-toolset \
+    cmake \
     git \
-    which \
     patch \
     flex \
     bison \
@@ -58,7 +43,7 @@ RUN dnf makecache \
     && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh 
 
 # Install dependencies
-RUN dnf makecache \ 
+RUN dnf makecache \
     && dnf install -y \
     openssl-devel \
     zlib-devel \
@@ -66,6 +51,7 @@ RUN dnf makecache \
     libaio-devel \
     systemd-devel \
     && dnf clean all \
+    && source /opt/rh/gcc-toolset-13/enable \
     && curl -L https://github.com/libcgroup/libcgroup/releases/download/v3.1.0/libcgroup-3.1.0.tar.gz -o /tmp/libcgroup.tar.gz \
     && tar -C /tmp -xzf /tmp/libcgroup.tar.gz \
     && cd /tmp/libcgroup-3.1.0 \
