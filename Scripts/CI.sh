@@ -12,7 +12,7 @@ frontend() {
     mkdir out 
     mkdir -p generated/protos
     protoc --go_out=./generated --go-grpc_out=./generated --proto_path=./protos ./protos/*.proto
-    
+
     pushd out
     go build ../cmd/cacct/cacct.go
     go build ../cmd/cacctmgr/cacctmgr.go

@@ -1,0 +1,44 @@
+name: Build and Upload Artifacts
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.cn-shanghai.aliyuncs.com/nativus/cranedev:ci
+    defaults:
+      run:
+        shell: bash -leo pipefail {0}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          echo "Building at $(pwd)"
+          mkdir out; pushd out
+          go build ../cmd/cacct/cacct.go
+          go build ../cmd/cacctmgr/cacctmgr.go
+          go build ../cmd/cbatch/cbatch.go 
+          go build ../cmd/ccancel/ccancel.go 
+          go build ../cmd/ccontrol/ccontrol.go 
+          go build ../cmd/cinfo/cinfo.go
+          go build ../cmd/cqueue/cqueue.go
+          popd out
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: out/*
+          retention-days: 30
+          if-no-files-found: error

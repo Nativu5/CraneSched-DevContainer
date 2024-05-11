@@ -75,9 +75,5 @@ RUN dnf makecache \
     && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz \
     && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
 
-# Add files
 WORKDIR /Workspace
-COPY Scripts/CI.sh /CI.sh
-
-ENTRYPOINT [ "/bin/bash", "--login", "/CI.sh" ]
-CMD [ "--mode" ]
+CMD [ "/bin/bash" ]
