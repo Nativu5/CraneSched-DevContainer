@@ -27,6 +27,8 @@ jobs:
             tag: "latest"
           - dockerfile: "./CI.Dockerfile"
             tag: "ci"
+          - dockerfile: "./full.Dockerfile"
+            tag: "full"
 
     steps:
       - name: Checkout repository

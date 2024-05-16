@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json.
 {
 	"name": "CraneDev",
-	"image": "registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest",
+	"image": "ghcr.io/nativu5/cranedev:latest",
 	"privileged": true,
 	"runArgs": [
 		"--cap-add=SYS_PTRACE",
