@@ -98,8 +98,8 @@ gpgkey=https://pgp.mongodb.com/server-7.0.asc" > /etc/yum.repos.d/mongodb-org-7.
 # Set Workdir
 WORKDIR /Workspace
 
-# Expose SSH port 
-# (will not be used till sshd launched manually)
+# Expose ports 
+# (will not be used till servers launched manually)
 EXPOSE 22 27017
 
 CMD ["/bin/bash"]
