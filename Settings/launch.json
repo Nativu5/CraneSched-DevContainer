@@ -2,15 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Go: Package",
-            "type": "go",
-            "request": "launch",
-            "mode": "auto",
-            "program": "${fileDirname}", // e.g., cmd/cacct, cmd/cbatch...
-            "args": [], // CLI args when debugging, e.g., ["-n", "3"]...
-            "preLaunchTask": "Protobuf: Generate"
-        },
-        {
             "name": "C++: Target",
             "request": "launch",
             "type": "lldb",
@@ -24,6 +15,27 @@
             "cmakeDebugType": "configure",
             "clean": true,
             "configureAll": false
+        },
+        {
+            "name": "Go: Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${fileDirname}", // e.g., cmd/cacct, cmd/cbatch...
+            "args": [] // CLI args when debugging, e.g., ["-n", "3"]...
         }
+        // Example: 
+        // {
+        //     "name": "Go: Cbatch",
+        //     "type": "go",
+        //     "request": "launch",
+        //     "mode": "auto",
+        //     "program": "cmd/cbatch",
+        //     "args": [
+        //         "--interpreter",
+        //         "/bin/zsh",
+        //         "${workspaceFolder}/out/testcase/intp.job"
+        //     ],
+        // }
     ]
 }
