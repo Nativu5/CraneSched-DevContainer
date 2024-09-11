@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build and Publish Docker Image
 
 on:
   push:
@@ -11,7 +11,7 @@ env:
   IMAGE_NAME: nativu5/cranedev
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -25,10 +25,13 @@ jobs:
         include:
           - dockerfile: "./Dockerfile"
             tag: "latest"
+            platforms: "linux/amd64, linux/arm64"
           - dockerfile: "./CI.Dockerfile"
             tag: "ci"
+            platforms: "linux/amd64, linux/arm64"
           - dockerfile: "./full.Dockerfile"
             tag: "full"
+            platforms: "linux/amd64, linux/arm64"
 
     steps:
       - name: Checkout repository
@@ -50,7 +53,7 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
@@ -61,28 +64,14 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ${{ matrix.dockerfile }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.tag }}
-          platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          platforms: ${{ matrix.platforms }}
           push: ${{ github.event_name != 'pull_request' }}
 
-      # Sign the resulting Docker image digest except on PRs.
-      # This will only write to the public Rekor transparency log when the Docker
-      # repository is public to avoid leaking data.  If you would like to publish
-      # transparency data even for private images, pass --force to cosign below.
-      # https://github.com/sigstore/cosign
       - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.tag }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        # This step uses the identity token to provision an ephemeral certificate
-        # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        if: github.event_name != 'pull_request'
+        run: echo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.tag }}" | xargs -I {} cosign sign --yes {}@${{ steps.build-and-push.outputs.digest }}
