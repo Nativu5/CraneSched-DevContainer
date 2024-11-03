@@ -50,6 +50,7 @@ RUN dnf makecache \
     libstdc++-devel \
     libstdc++-static \
     openssl-devel \
+    openssl-devel-engine \
     zlib-devel \
     pam-devel \
     libaio-devel \
