@@ -18,14 +18,14 @@ If not using VS Code, refer to below commands for manual build and run:
 
 - Build and push
     ```sh
-    docker build -t registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest .
-    docker push registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
+    docker build -t ghcr.io/nativu5/cranedev:full .
+    docker push ghcr.io/nativu5/cranedev:full
     ```
 
 - Pull and run
     ```sh
-    docker pull registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
-    docker run -it --rm --name cranedev registry.cn-shanghai.aliyuncs.com/nativus/cranedev:latest
+    docker pull ghcr.io/nativu5/cranedev:full
+    docker run -it --rm --name cranedev ghcr.io/nativu5/cranedev:full
     ```
 - Connect with SSH
     
@@ -33,3 +33,8 @@ If not using VS Code, refer to below commands for manual build and run:
     
     The default user is `root` with password `xFeN1L1Hkbtw`.
 
+## Image Variants
+
+- `latest`: Full development environment.
+- `full`: Full development environment with MongoDB.
+- `ci`: only toolchains for building, no development tools.
