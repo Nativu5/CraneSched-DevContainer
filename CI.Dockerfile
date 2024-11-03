@@ -37,6 +37,7 @@ RUN dnf makecache \
     gcc \
     gcc-c++ \
     cmake \
+    automake \
     git \
     patch \
     flex \
