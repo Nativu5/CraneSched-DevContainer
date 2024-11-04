@@ -1,3 +1,8 @@
+# This workflow will build images and push it to GitHub Container Registry. 
+# It will also sign the image with cosign tool.
+# 
+# This is NOT the workflow for CraneSched CI/CD.
+
 name: Build and Publish Docker Image
 
 on:

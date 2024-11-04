@@ -1,30 +1,41 @@
 # CraneSched Dev Container
 
-FROM fedora:42
+# This image is used for CI/CD pipeline, so we need a rather older base image to ensure compatibility.
+FROM rockylinux/rockylinux:8
 ARG TARGETPLATFORM
 
 LABEL org.opencontainers.image.source=https://github.com/Nativu5/CraneSched-DevContainer
-LABEL org.opencontainers.image.description="CraneSched DevContainer"
+LABEL org.opencontainers.image.description="CraneSched DevContainer (CI)"
 
-# Update the system and install basic tools
+# Add EPEL and PowerTools repositories
 RUN dnf update -y \
-    && dnf install -y --allowerasing curl tar unzip \
+    && dnf install -y epel-release \
+    && dnf install -y --allowerasing yum-utils curl tar unzip \
+    && dnf config-manager --set-enabled powertools \
     && dnf clean all
 
 # Install protobuf
 ARG PROTOC_ZIP
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-    PROTOC_ZIP=protoc-23.2-linux-x86_64.zip; \
+        PROTOC_ZIP=protoc-23.2-linux-x86_64.zip; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-    PROTOC_ZIP=protoc-23.2-linux-aarch_64.zip; \
+        PROTOC_ZIP=protoc-23.2-linux-aarch_64.zip; \
     fi \
     && curl -L https://github.com/protocolbuffers/protobuf/releases/download/v23.2/${PROTOC_ZIP} -o /tmp/protoc.zip \
     && unzip /tmp/protoc.zip -d /usr/local \
-    && rm /tmp/protoc.zip /usr/local/readme.txt
+    && rm -f /tmp/protoc.zip /usr/local/readme.txt
 
-# Install Golang
-RUN dnf makecache \
-    && dnf install -y golang \
+ARG GOLANG_TARBALL
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+        GOLANG_TARBALL=go1.23.0.linux-amd64.tar.gz; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        GOLANG_TARBALL=go1.23.0.linux-arm64.tar.gz; \
+    fi \
+    && curl -L https://go.dev/dl/${GOLANG_TARBALL} -o /tmp/go.tar.gz \
+    && tar -C /usr/local -xzf /tmp/go.tar.gz \
+    && rm -f /tmp/go.tar.gz \
+    && echo 'export GOPATH=/root/go' >> /etc/profile.d/go.sh \
+    && echo 'export PATH=$GOPATH/bin:/usr/local/go/bin:$PATH' >> /etc/profile.d/go.sh \
     && echo 'go env -w GO111MODULE=on' >> /etc/profile.d/go.sh \
     && echo 'go env -w GOPROXY=https://goproxy.cn,direct' >> /etc/profile.d/go.sh \
     && source /etc/profile.d/go.sh \
@@ -34,8 +45,7 @@ RUN dnf makecache \
 # Install toolchains
 RUN dnf makecache \
     && dnf install -y \
-    gcc \
-    gcc-c++ \
+    gcc-toolset-13 \
     cmake \
     automake \
     git \
@@ -44,29 +54,18 @@ RUN dnf makecache \
     bison \
     ninja-build \
     rpm-build \
-    && dnf clean all
+    dpkg \
+    && dnf clean all \
+    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh 
 
 # Install dependencies
 RUN dnf makecache \
     && dnf install -y \
-    libstdc++-devel \
-    libstdc++-static \
     openssl-devel \
-    openssl-devel-engine \
     zlib-devel \
     pam-devel \
     libaio-devel \
-    systemd-devel \
-    && dnf clean all \
-    && curl -L https://github.com/libcgroup/libcgroup/releases/download/v3.1.0/libcgroup-3.1.0.tar.gz -o /tmp/libcgroup.tar.gz \
-    && tar -C /tmp -xzf /tmp/libcgroup.tar.gz \
-    && cd /tmp/libcgroup-3.1.0 \
-    && ./configure --prefix=/usr/local \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz \
-    && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
+    systemd-devel
 
-# Set Workdir
 WORKDIR /Workspace
 CMD [ "/bin/bash" ]
