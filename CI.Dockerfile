@@ -61,11 +61,15 @@ RUN dnf makecache \
 # Install dependencies
 RUN dnf makecache \
     && dnf install -y \
-    openssl-devel \
+    openssl3-devel \
     zlib-devel \
     pam-devel \
     libaio-devel \
-    systemd-devel
+    systemd-devel \
+    && dnf clean all \
+    && ln -s /usr/lib64/libssl.so.3 /usr/lib64/libssl.so \
+    && echo 'export OPENSSL_ROOT_DIR=/usr/include/openssl3' >> /etc/profile.d/extra.sh \
+    && echo 'export OPENSSL_INCLUDE_DIR=/usr/include/openssl3' >> /etc/profile.d/extra.sh
 
 WORKDIR /Workspace
 CMD [ "/bin/bash" ]
