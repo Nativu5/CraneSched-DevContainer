@@ -43,6 +43,7 @@ RUN dnf makecache \
     flex \
     bison \
     ninja-build \
+    rpm-build \
     && dnf clean all
 
 # Install dependencies
