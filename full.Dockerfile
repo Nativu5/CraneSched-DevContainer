@@ -43,7 +43,6 @@ RUN dnf makecache \
     flex \
     bison \
     ninja-build \
-    rpm-build \
     && dnf clean all
 
 # Install dependencies
@@ -57,15 +56,7 @@ RUN dnf makecache \
     pam-devel \
     libaio-devel \
     systemd-devel \
-    && dnf clean all \
-    && curl -L https://github.com/libcgroup/libcgroup/releases/download/v3.1.0/libcgroup-3.1.0.tar.gz -o /tmp/libcgroup.tar.gz \
-    && tar -C /tmp -xzf /tmp/libcgroup.tar.gz \
-    && cd /tmp/libcgroup-3.1.0 \
-    && ./configure --prefix=/usr/local \
-    && make -j$(nproc) \
-    && make install \
-    && rm -rf /tmp/libcgroup-3.1.0 /tmp/libcgroup.tar.gz \
-    && echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/profile.d/extra.sh
+    && dnf clean all
 
 # Development Utils
 RUN dnf makecache \
