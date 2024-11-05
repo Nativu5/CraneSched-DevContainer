@@ -25,6 +25,8 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 # Install Golang
 RUN dnf makecache \
     && dnf install -y golang \
+    && dnf clean all \
+    && echo 'export PATH=/root/go/bin:$PATH' >> /etc/profile.d/go.sh \
     && echo 'go env -w GO111MODULE=on' >> /etc/profile.d/go.sh \
     && echo 'go env -w GOPROXY=https://goproxy.cn,direct' >> /etc/profile.d/go.sh \
     && source /etc/profile.d/go.sh \
@@ -85,8 +87,7 @@ RUN dnf makecache \
 RUN mkdir -p /var/run/sshd \
     && ssh-keygen -A \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-    && echo 'root:xFeN1L1Hkbtw' | chpasswd \
-    && echo 'export PATH=/usr/lib64/ccache:$PATH' >> /etc/profile.d/extra.sh
+    && echo 'root:xFeN1L1Hkbtw' | chpasswd
 
 # Add MongoDB
 ARG MONGO_BASE_URL
