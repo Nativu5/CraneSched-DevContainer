@@ -66,10 +66,19 @@ RUN dnf makecache \
     pam-devel \
     libaio-devel \
     systemd-devel \
-    && dnf clean all \
-    && ln -s /usr/lib64/libssl.so.3 /usr/lib64/libssl.so \
+    && dnf clean all
+
+# Rocky Linux 8 use OpenSSL 1.1 by default, but we prefer OpenSSL 3.
+# To simplify the building command, we create symbolic links to OpenSSL 3. 
+# However, this is a BAD practice in production environment.
+# In production, you should use `CMake -DOPENSSL_...` to use OpenSSL 3.
+RUN ln -s /usr/lib64/libssl.so.3 /usr/lib64/libssl.so \
+    && ln -s /usr/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so \
+    && ln -s /usr/lib64/pkgconfig/openssl3.pc /usr/lib64/pkgconfig/openssl.pc \
     && echo 'export OPENSSL_ROOT_DIR=/usr/include/openssl3' >> /etc/profile.d/extra.sh \
-    && echo 'export OPENSSL_INCLUDE_DIR=/usr/include/openssl3' >> /etc/profile.d/extra.sh
+    && echo 'export OPENSSL_INCLUDE_DIR=/usr/include/openssl3' >> /etc/profile.d/extra.sh \
+    && echo 'export OPENSSL_SSL_LIBRARY=/usr/lib64/openssl3/libssl.so' >> /etc/profile.d/extra.sh \
+    && echo 'export OPENSSL_CRYPTO_LIBRARY=/usr/lib64/openssl3/libcrypto.so' >> /etc/profile.d/extra.sh
 
 WORKDIR /Workspace
 CMD [ "/bin/bash" ]
