@@ -69,6 +69,8 @@ RUN dnf makecache \
     vim \
     tmux \
     which \
+    ps \
+    hostname \
     iproute \
     iputils \
     openssh-server \
