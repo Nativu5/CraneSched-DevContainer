@@ -45,7 +45,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 # Install toolchains
 RUN dnf makecache \
     && dnf install -y \
-    gcc-toolset-13 \
+    gcc-toolset-14 \
     cmake \
     automake \
     git \
@@ -56,7 +56,7 @@ RUN dnf makecache \
     rpm-build \
     dpkg \
     && dnf clean all \
-    && echo 'source /opt/rh/gcc-toolset-13/enable' >> /etc/profile.d/extra.sh 
+    && echo 'source /opt/rh/gcc-toolset-14/enable' >> /etc/profile.d/extra.sh 
 
 # Install dependencies
 RUN dnf makecache \
