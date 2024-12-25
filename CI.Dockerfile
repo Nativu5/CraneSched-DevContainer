@@ -47,6 +47,7 @@ RUN dnf makecache \
     && dnf install -y \
     gcc-toolset-14 \
     cmake \
+    ccache \
     automake \
     git \
     patch \
