@@ -66,6 +66,7 @@ RUN dnf makecache \
     zlib-devel \
     pam-devel \
     libaio-devel \
+    libcurl-devel \
     systemd-devel \
     && dnf clean all
 
