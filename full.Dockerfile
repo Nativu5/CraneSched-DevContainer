@@ -41,6 +41,7 @@ RUN dnf makecache \
     cmake \
     automake \
     git \
+    gawk \
     patch \
     flex \
     bison \
