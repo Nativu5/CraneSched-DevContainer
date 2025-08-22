@@ -60,6 +60,7 @@ RUN dnf makecache \
     libaio-devel \
     libcurl-devel \
     systemd-devel \
+    shadow-utils-subid-devel \
     && dnf clean all
 
 # Development Utils

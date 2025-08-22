@@ -69,6 +69,7 @@ RUN dnf makecache \
     libaio-devel \
     libcurl-devel \
     systemd-devel \
+    shadow-utils-subid-devel \
     && dnf clean all
 
 # Rocky Linux 8 use OpenSSL 1.1 by default, but we prefer OpenSSL 3.
