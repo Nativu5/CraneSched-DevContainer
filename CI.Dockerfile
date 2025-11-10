@@ -27,9 +27,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 
 ARG GOLANG_TARBALL
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-        GOLANG_TARBALL=go1.23.0.linux-amd64.tar.gz; \
+        GOLANG_TARBALL=go1.25.4.linux-amd64.tar.gz; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-        GOLANG_TARBALL=go1.23.0.linux-arm64.tar.gz; \
+        GOLANG_TARBALL=go1.25.4.linux-arm64.tar.gz; \
     fi \
     && curl -L https://go.dev/dl/${GOLANG_TARBALL} -o /tmp/go.tar.gz \
     && tar -C /usr/local -xzf /tmp/go.tar.gz \
