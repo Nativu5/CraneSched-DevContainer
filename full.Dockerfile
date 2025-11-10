@@ -31,7 +31,9 @@ RUN dnf makecache \
     && echo 'go env -w GOPROXY=https://goproxy.cn,direct' >> /etc/profile.d/go.sh \
     && source /etc/profile.d/go.sh \
     && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
-    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest \
+    && go install github.com/goreleaser/goreleaser/v2@latest \
+    && go clean -modcache
 
 # Install toolchains
 RUN dnf makecache \
