@@ -1,5 +1,6 @@
 {
     "editor.formatOnSave": true,
+    "cmake.useCMakePresets": "never",
     "cmake.configureOnOpen": false,
     "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
     "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
