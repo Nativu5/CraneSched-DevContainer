@@ -1,16 +1,8 @@
 {
     "editor.formatOnSave": true,
-    "cmake.useCMakePresets": "never",
+    "cmake.useCMakePresets": "auto",
     "cmake.configureOnOpen": false,
     "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
-    "cmake.buildDirectory": "${workspaceFolder}/cmake-build-debug",
-    "cmake.configureArgs": [
-        // "--fresh",
-        "-DENABLE_UNQLITE=ON",
-        "-DENABLE_BERKELEY_DB=OFF",
-        "-DCRANE_FULL_DYNAMIC=OFF",
-        "-DCRANE_USE_GITEE_SOURCE=OFF"
-    ],
     "clangd.checkUpdates": true,
     "clangd.detectExtensionConflicts": true,
     "clangd.serverCompletionRanking": true,
