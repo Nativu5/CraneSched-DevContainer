@@ -61,6 +61,7 @@ RUN dnf makecache \
     pam-devel \
     libaio-devel \
     libcurl-devel \
+    lua-devel \
     systemd-devel \
     shadow-utils-subid-devel \
     && dnf clean all
