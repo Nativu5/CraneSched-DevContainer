@@ -4,17 +4,17 @@ Portable development environment for [CraneSched](https://github.com/PKUHPC/Cran
 
 ## Quick Start
 
-1. Open VS Code and install Dev Container extension.  
+1. Open VS Code and install Dev Container extension.
 2. Copy .devcontainer folder to your project.
 3. Reopen the project in the container.
 
 To learn more about Dev Container, see [Developing inside a Container](https://code.visualstudio.com/docs/remote/containers).
 
-For advanced configuration, see [Dev Container metadata reference](https://containers.dev/implementors/json_reference/). 
+For advanced configuration, see [Dev Container metadata reference](https://containers.dev/implementors/json_reference/).
 
 ## Without VS Code
 
-If not using VS Code, refer to below commands for manual build and run: 
+If not using VS Code, refer to below commands for manual build and run:
 
 - Build and push
     ```sh
@@ -28,56 +28,36 @@ If not using VS Code, refer to below commands for manual build and run:
     docker run -it --rm --name cranedev ghcr.io/nativu5/cranedev:full
     ```
 - Connect with SSH
-    
-    SSH server is running on port 22. 
-    
+
+    SSH server is running on port 22.
+
     The default user is `root` with password `xFeN1L1Hkbtw`.
 
-## Using Local Submodules
+## Using CraneSched Sources
 
-To temporarily point submodules to local directories (without affecting the remote config on GitHub):
+This repository only stores the dev container configuration and Dockerfiles. It
+does not track CraneSched source repositories as Git submodules.
 
-```sh
-# Allow local file transport (required for Git 2.38.1+)
-git config protocol.file.allow always
-
-# Point submodules to local paths
-git config submodule.CraneSched.url /path/to/your/local/CraneSched
-git config submodule.CraneSched-FrontEnd.url /path/to/your/local/CraneSched-FrontEnd
-
-# Initialize and update submodules to latest master
-git submodule update --init --remote
-```
-
-This only modifies `.git/config` (local, not committed), leaving `.gitmodules` untouched.
-
-To restore remote URLs:
+When you need local source code, clone the required repositories yourself:
 
 ```sh
-git submodule sync
+git clone https://github.com/PKUHPC/CraneSched.git
+git clone https://github.com/PKUHPC/CraneSched-FrontEnd.git
 ```
 
-To prevent submodule commit changes from being accidentally committed (useful during local development):
+You may place those repositories wherever your local workflow expects them. For
+example, a harness workspace may keep them beside this repository:
 
-```sh
-git update-index --assume-unchanged CraneSched
-git update-index --assume-unchanged CraneSched-FrontEnd
+```text
+repos/
+  CraneSched/
+  CraneSched-FrontEnd/
+  CraneSched-DevContainer/
 ```
 
-To restore tracking:
-
-```sh
-git update-index --no-assume-unchanged CraneSched
-git update-index --no-assume-unchanged CraneSched-FrontEnd
-```
-
-If you need to re-clone submodules (e.g., after pointing to a wrong URL), clean up and re-initialize:
-
-```sh
-rm -rf CraneSched .git/modules/CraneSched
-rm -rf CraneSched-FrontEnd .git/modules/CraneSched-FrontEnd
-git submodule update --init --remote
-```
+Keep source repository commits and branches managed in their own repositories.
+This dev container repository should remain a standalone environment
+configuration repository.
 
 ## Image Variants
 
