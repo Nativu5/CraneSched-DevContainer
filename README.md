@@ -64,3 +64,13 @@ configuration repository.
 - `latest`: Full development environment.
 - `full`: Full development environment with MongoDB.
 - `ci`: only toolchains for building, no development tools.
+- `toolchain`: immutable build-only compiler/dependency contract for automated
+  CraneSched builds. It has no SSH, MongoDB, fixed password, debugger, source
+  workspace, or development entrypoint; noninteractive builds use its declared
+  `PATH` directly. Consumers must pin this variant by digest.
+
+Validate a locally built toolchain image with:
+
+```sh
+docker run --rm ghcr.io/nativu5/cranedev:toolchain toolchain-smoke
+```
